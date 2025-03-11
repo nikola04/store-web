@@ -1,0 +1,19 @@
+{
+  "name": "store",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest ./"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nikola04/store.git"
+  },
+  "author": "Nikola Nedeljkovic",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/nikola04/store/issues"
+  },
+  "homepage": "https://github.com/nikola04/store#readme",
+  "description": ""
+}
