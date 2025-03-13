@@ -1,14 +1,18 @@
 import Nav from "./components/Navigation/Nav"
 import { Route, Routes } from "react-router"
+import Home from "./pages/Home"
+import GameCategory from "./pages/category/GameCategory"
+import Account from "./pages/account/Account"
+import Cart from "./pages/cart/Cart"
 
 function App() {
     return <div className="relative bg-background w-screen max-w-full h-auto flex flex-col justify-center items-center">
         <Nav/>
         <Routes>
-            <Route path="*" element={
-                <div className="w-full max-w-7xl px-4 py-2">
-                </div>
-            }/>
+            <Route path="/" element={<Home/>}/>
+            <Route path="/category/games" element={<GameCategory/>}/>
+            <Route path="/account" element={<Account/>}/>
+            <Route path="/cart" element={<Cart/>}/>
         </Routes>
     </div>
 }

@@ -1,0 +1,1 @@
+export const allowedPlatforms = ['all', 'playstation', 'nintendo', 'xbox', 'pc'];

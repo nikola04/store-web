@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router';
 import { IoCartOutline, IoMoonOutline, IoSearch } from "react-icons/io5";
 import { LuUser } from "react-icons/lu";
 import NavButton from "./NavButton";
-import { categoryButtons } from "../../constants/NavigationCategories";
+import { platformButtons } from "../../constants/NavigationCategories";
 import { MdGames } from "react-icons/md";
 
 function Nav(){
@@ -11,16 +11,20 @@ function Nav(){
     const location = useLocation();
     const [search, setSearch] = useState<string>("");
 
+    const searchParams = new URLSearchParams(location.search);
+    const currentPlatform = searchParams.get('platform');
+    const isActivePlatform = useCallback((platform: string) => location.pathname.includes('/category/games') && platform.toLowerCase() === currentPlatform, [currentPlatform, location.pathname]);
+
     const onSearch = useCallback((e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(search)
-    }, [search])
+        navigate(`/category/games?query=${search}`);
+    }, [navigate, search])
 
     return <div className="flex flex-col justify-center items-center w-full h-auto bg-background-alt text-white z-10">
         <div className="max-w-7xl w-full px-4">
             <div className="w-full h-16 flex justify-between items-center gap-2">
                 <div className="w-full h-full flex items-center gap-8">
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate("/")}>
                         <MdGames className="text-accent" size={30}/>
                         <p className="text-accent text-xl font-extrabold">RGames</p>
                     </div>
@@ -37,18 +41,18 @@ function Nav(){
                 </div>
                 <div className="flex items-center gap-2">
                     <div>
-                        <NavButton className="text-primary flex">
-                            <IoMoonOutline size={22}/>
+                        <NavButton className="text-text-base hover:text-primary flex">
+                            <IoMoonOutline size={22} className="transition-all"/>
                         </NavButton>
                     </div>
                     <div>
-                        <NavButton className="text-primary flex">
-                            <LuUser size={22}/>
+                        <NavButton className="text-text-base hover:text-primary flex" onClick={() => navigate("/cart")}>
+                            <IoCartOutline size={22} className="transition-all"/>
                         </NavButton>
                     </div>
                     <div>
-                        <NavButton className="text-primary flex">
-                            <IoCartOutline size={22}/>
+                        <NavButton className="text-text-base hover:text-primary flex" onClick={() => navigate("/account")}>
+                            <LuUser size={22} className="transition-all"/>
                         </NavButton>
                     </div>
                 </div>
@@ -56,8 +60,8 @@ function Nav(){
         </div>
         <div className="w-full bg-primary-alt flex justify-center items-center">
             <div className="max-w-7xl w-full flex flex-wrap items-center px-2 py-1 gap-1">
-                { categoryButtons.map((category, index) => <div key={index} className="py-1">
-                    <button onClick={() => navigate(`/category/${category.name.toLowerCase()}`)} className={`flex items-center gap-2 px-3 py-1 rounded-xl transition-all border-0 ${location.pathname.includes(category.name.toLowerCase()) ? "bg-accent" : "hover:bg-white/23 active:bg-white/33 cursor-pointer text-accent"}`}>
+                { platformButtons.map((category, index) => <div key={index} className="py-1">
+                    <button onClick={() => navigate(`/category/games?platform=${category.name.toLowerCase()}`)} className={`flex items-center gap-2 px-3 py-1 rounded-xl transition-all border-0 ${ isActivePlatform(category.name) ? "bg-accent" : "hover:bg-white/23 active:bg-white/33 cursor-pointer text-accent"}`}>
                         { category.logo }
                         <p className="text-sm">{category.name}</p>
                     </button>
