@@ -1,9 +1,9 @@
-import PageTemplate from "../../templates/PageTemplate";
+import Container from "../../components/layout/Container";
 
 function Cart(){
-    return <PageTemplate>
+    return <Container>
         <h1>Cart</h1>
-    </PageTemplate>
+    </Container>
 }
 
 export default Cart;

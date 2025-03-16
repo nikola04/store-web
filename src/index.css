@@ -21,6 +21,7 @@
     --color-text-alt: #fff;
     --color-background: #eee;
     --color-background-alt: #fcfcfc;
+    --gradient-primary: linear-gradient(120deg, var(--color-primary), var(--color-primary-alt));
     --font-ubuntu: 'Ubuntu', sans-serif;
 }
 

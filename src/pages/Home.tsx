@@ -1,11 +1,11 @@
-import Page from "../templates/PageTemplate";
+import Container from "../components/layout/Container";
 
 function Home() {
-    return <Page>
+    return <Container>
         <div>
             <h1>Home</h1>
         </div>
-    </Page>
+    </Container>
 }
 
 export default Home;

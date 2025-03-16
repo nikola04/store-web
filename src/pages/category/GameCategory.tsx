@@ -1,6 +1,6 @@
 import { useLocation } from "react-router";
-import Page from "../../templates/PageTemplate";
 import { allowedPlatforms } from "../../constants/allowedPlatforms";
+import Container from "../../components/layout/Container";
 
 function GameCategory() {
     const location = useLocation();
@@ -12,13 +12,13 @@ function GameCategory() {
 
     const search = searchParams.get('query');
 
-    return <Page>
+    return <Container>
         <div>
             <h1 className="font-bold">Games</h1>
             <p>Platform: {platform}</p>
             <p>Searched: {search}</p>
         </div>
-    </Page>
+    </Container>
 }
 
 export default GameCategory;

@@ -1,9 +1,12 @@
-import PageTemplate from "../../templates/PageTemplate";
+import Container from "../../components/layout/Container";
+import { useAuth } from "../../hooks/Auth";
 
 function Account(){
-    return <PageTemplate>
+    const { user } = useAuth();
+    return <Container>
         <h1>Account</h1>
-    </PageTemplate>
+        <p>{ JSON.stringify(user) }</p>
+    </Container>
 }
 
 export default Account;
