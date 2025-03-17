@@ -1,11 +1,9 @@
 import { FormEvent, useCallback, useState } from "react";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import GoogleButtonSmall from "../../components/button/GoogleButtonSmall";
 import FacebookButtonSmall from "../../components/button/FacebookButtonSmall";
 import { verifyEmail, verifyName, verifyPassword } from "../../utils/validation";
-import { API } from "../../constants/api";
-import { ACCESS_TOKEN } from "../../constants/storage";
-import { useAuth } from "../../hooks/Auth";
+import { useAuth } from "../../hooks/useAuth";
 
 function Register(){
     const [name, setName] = useState<string>("");
@@ -15,8 +13,8 @@ function Register(){
     const [error, setError] = useState<string>("");
 
     const navigate = useNavigate();
-        const auth = useAuth();
-    
+    const auth = useAuth();
+    const location = useLocation();
 
     const registerSubmit = useCallback(async (e: FormEvent) => {
         e.preventDefault();
@@ -27,7 +25,7 @@ function Register(){
             if(password !== confirmPassword) throw "Passwords don't match"
             if(!verifyPassword(password)) throw "Please enter valid password";
 
-            const res = await fetch(`${API.URL}/auth/register`, {
+            const res = await fetch(`/api/auth/register`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -36,16 +34,19 @@ function Register(){
             }).then(res => res.json());
             if(res.status !== "OK") throw res.message;
 
-            sessionStorage.setItem(ACCESS_TOKEN, res.access_token);
-            auth.login(res.user, res.csrf_token);
-            navigate("/");
+            auth.login(res.user, res.access_token, res.csrf_token);
+
+            const searchParams = new URLSearchParams(location.search);
+            const path = searchParams.get('redirect') || '/';
+            searchParams.delete('redirect');
+            navigate(`${path}?${searchParams.toString()}`);
         }catch(err){
             if(typeof err === 'string') {
                 setError(err);
                 return;
             }
             setError('Unknown error. Please try again later.');        }
-    }, [name, email, password, confirmPassword, auth, navigate]);
+    }, [name, email, password, confirmPassword, auth, location, navigate]);
 
     const onGoogleLogin = () => {
         console.log("login with google")
@@ -54,7 +55,7 @@ function Register(){
         console.log("login with facebook")
     }
 
-    const onLogin = () => navigate('/auth/login');
+    const onLogin = () => navigate('/auth/login' + location.search);
 
     return <div className="relative w-full h-full flex">
         <div className="bg-background-alt text-text-base flex flex-col justify-center items-center px-6 py-8 flex-1/3">

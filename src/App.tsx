@@ -8,7 +8,7 @@ import NavLayout from "./components/layout/NavLayout"
 import Login from "./pages/auth/Login"
 import Register from "./pages/auth/Register"
 import AuthLayout from "./components/layout/AuthLayout"
-import { AuthProvider } from "./providers/Auth"
+import AuthProvider from "./providers/AuthProvider"
 
 function App() {
     return <AuthProvider>

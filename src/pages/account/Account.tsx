@@ -1,5 +1,5 @@
 import Container from "../../components/layout/Container";
-import { useAuth } from "../../hooks/Auth";
+import { useAuth } from "../../hooks/useAuth";
 
 function Account(){
     const { user } = useAuth();

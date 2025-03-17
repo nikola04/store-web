@@ -1,18 +1,18 @@
 import { FormEvent, useCallback, useState } from "react";
 import GoogleButtonSmall from "../../components/button/GoogleButtonSmall";
 import FacebookButtonSmall from "../../components/button/FacebookButtonSmall";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { verifyEmail } from "../../utils/validation";
-import { useAuth } from "../../hooks/Auth";
-import { ACCESS_TOKEN } from "../../constants/storage";
-// import { API } from "../../constants/api";
+import { useAuth } from "../../hooks/useAuth";
 
 function Login(){
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [error, setError] = useState<string>("");
+
     const navigate = useNavigate();
     const auth = useAuth();
+    const location = useLocation();
 
     const loginSubmit = useCallback(async (e: FormEvent) => {
         e.preventDefault();
@@ -30,9 +30,12 @@ function Login(){
             }).then(res => res.json());
             if(res.status !== "OK") throw res.message;
             
-            sessionStorage.setItem(ACCESS_TOKEN, res.access_token);
-            auth.login(res.user, res.csrf_token);
-            navigate("/");
+            auth.login(res.user, res.access_token, res.csrf_token);
+
+            const searchParams = new URLSearchParams(location.search);
+            const path = searchParams.get('redirect') || '/';
+            searchParams.delete('redirect');
+            navigate(`${path}?${searchParams.toString()}`);
         }catch(err){
             if(typeof err === 'string') {
                 setError(err);
@@ -40,7 +43,7 @@ function Login(){
             }
             setError('Unknown error. Please try again later.');
         }
-    }, [email, password, auth, navigate]);
+    }, [email, password, auth, location, navigate]);
 
     const onGoogleLogin = () => {
         console.log("login with google")
@@ -49,8 +52,8 @@ function Login(){
         console.log("login with facebook")
     }
 
-    const onRegister = () => navigate('/auth/register');
-    const onForgotPswd = () => navigate('/auth/forgot-password')
+    const onRegister = () => navigate('/auth/register' + location.search);
+    const onForgotPswd = () => navigate('/auth/forgot-password' + location.search)
 
     return <div className="relative w-full h-full flex">
         <div className="bg-background-alt text-text-base flex flex-col justify-center items-center px-6 py-8 flex-1/3">

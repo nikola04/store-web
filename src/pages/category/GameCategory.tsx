@@ -1,5 +1,5 @@
 import { useLocation } from "react-router";
-import { allowedPlatforms } from "../../constants/allowedPlatforms";
+import { allowedPlatforms } from "../../constants/platforms";
 import Container from "../../components/layout/Container";
 
 function GameCategory() {

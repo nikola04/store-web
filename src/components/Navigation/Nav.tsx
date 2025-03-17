@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router';
 import { IoCartOutline, IoMoonOutline, IoSearch } from "react-icons/io5";
 import { LuUser } from "react-icons/lu";
 import NavButton from "./NavButton";
-import { platformButtons } from "../../constants/NavigationCategories";
+import { platformButtons } from "../../constants/platforms";
 import { MdGames } from "react-icons/md";
 
 function Nav(){

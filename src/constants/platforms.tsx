@@ -1,6 +1,6 @@
 import { BsNintendoSwitch, BsPc, BsPlaystation, BsXbox } from "react-icons/bs";
-// import { CgGames } from "react-icons/cg";
-// import { IoGift } from "react-icons/io5";
+
+export const allowedPlatforms = ['all', 'playstation', 'nintendo', 'xbox', 'pc'];
 
 export const platformButtons = [{
     name: "Playstation",
@@ -14,10 +14,4 @@ export const platformButtons = [{
 }, {
     name: "PC",
     logo: <BsPc size={16}/>
-// }, {
-//     name: "Giftcards",
-//     logo: <IoGift size={15}/>
-// }, {
-//     name: "Others",
-//     logo: <CgGames size={19}/>
 }]
