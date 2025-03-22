@@ -7,16 +7,15 @@ import { useAuthSync } from '../auth/useAuthSync';
 const initialState: AuthState = {
     isLoggedIn: false,
     user: null,
-    csrfToken: null,
 };
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [state, dispatch] = useReducer(authReducer, initialState);
-    const { login, logout, updateCsrfToken, updateUser } = useAuthActions(dispatch);
-    const isLoading = useAuthSync(updateCsrfToken, updateUser);
+    const { login, logout, updateUser } = useAuthActions(dispatch);
+    const isLoading = useAuthSync(updateUser);
 
     return (
-        <AuthContext.Provider value={{ ...state, isLoading, login, logout, updateCsrfToken, updateUser }}>
+        <AuthContext.Provider value={{ ...state, isLoading, login, logout, updateUser }}>
             {children}
         </AuthContext.Provider>
     );

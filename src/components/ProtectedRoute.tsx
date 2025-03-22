@@ -1,7 +1,7 @@
 import { Navigate, useLocation } from "react-router";
-import { useAuth } from "../../hooks/useAuth";
-import { LOGIN_PATH } from "../../constants/locations";
-import Loader from "../loader";
+import { useAuth } from "../hooks/useAuth";
+import Loader from "./loader";
+import { LOCATION_PATH } from "../constants/locations";
 
 
 function ProtectedRoute({ children }: {
@@ -12,7 +12,7 @@ function ProtectedRoute({ children }: {
 
     const searchParams = new URLSearchParams(location.search.toString());
     searchParams.append('redirect', location.pathname.toString());
-    const path = `${LOGIN_PATH}?${searchParams.toString()}`;
+    const path = `${LOCATION_PATH.AUTH.LOGIN}?${searchParams.toString()}`;
     
     if(auth.isLoading) 
         return <Loader />

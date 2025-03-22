@@ -1,9 +1,11 @@
-import { FormEvent, useCallback, useState } from "react";
+import { FormEvent, useCallback, useEffect, useState } from "react";
 import GoogleButtonSmall from "../../components/button/GoogleButtonSmall";
 import FacebookButtonSmall from "../../components/button/FacebookButtonSmall";
 import { useLocation, useNavigate } from "react-router";
 import { verifyEmail } from "../../utils/validation";
 import { useAuth } from "../../hooks/useAuth";
+import { CSRF_TOKEN } from "../../constants/storage";
+import { LOCATION_PATH } from "../../constants/locations";
 
 function Login(){
     const [email, setEmail] = useState<string>("");
@@ -30,7 +32,8 @@ function Login(){
             }).then(res => res.json());
             if(res.status !== "OK") throw res.message;
             
-            auth.login(res.user, res.access_token, res.csrf_token);
+            auth.login(res.user, res.access_token);
+            localStorage.setItem(CSRF_TOKEN, res.csrf_token);
 
             const searchParams = new URLSearchParams(location.search);
             const path = searchParams.get('redirect') || '/';
@@ -52,8 +55,17 @@ function Login(){
         console.log("login with facebook")
     }
 
-    const onRegister = () => navigate('/auth/register' + location.search);
-    const onForgotPswd = () => navigate('/auth/forgot-password' + location.search)
+    const onRegister = () => navigate(LOCATION_PATH.AUTH.REGISTER + location.search);
+    const onForgotPswd = () => navigate(LOCATION_PATH.AUTH.FORGOT_PSWD + location.search)
+
+    useEffect(() => {
+        if(!auth.isLoggedIn) return;
+        
+        const searchParams = new URLSearchParams(location.search);
+        const path = searchParams.get('redirect') || '/';
+        searchParams.delete('redirect');
+        navigate(`${path}?${searchParams.toString()}`);
+    }, [auth.isLoggedIn, location.search, navigate]);
 
     return <div className="relative w-full h-full flex">
         <div className="bg-background-alt text-text-base flex flex-col justify-center items-center px-6 py-8 flex-1/3">

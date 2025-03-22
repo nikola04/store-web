@@ -1,19 +1,11 @@
-import { createAPIClient } from "../services/apiClient";
+import { makeRequest } from "../services/apiClient";
+import { User } from "../types/user";
 
-type User = {
-    id: string;
-    name: string|null;
-    email: string;
-    created_at: Date;
-    updated_at: Date;
-}
-
-export const getCurrentUser = async (signal?: AbortSignal): Promise<User> => {
-    const apiClient = createAPIClient();
-    const response = await apiClient.request({
+export const getCurrentUser = async (): Promise<User> => {
+    const response = await makeRequest({
         url: '/user/@me',
         method: 'GET',
-        signal
+        authorize: true
     });
     const data = response.data;
     if(data.error || !data.user) throw data.message;

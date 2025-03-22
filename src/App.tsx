@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router"
-import ProtectedRoute from "./components/navigation/ProtectedRoute"
+import ProtectedRoute from "./components/ProtectedRoute"
 import Home from "./pages/Home"
 import GameCategory from "./pages/category/GameCategory"
 import Account from "./pages/account/Account"
@@ -9,19 +9,20 @@ import Login from "./pages/auth/Login"
 import Register from "./pages/auth/Register"
 import AuthLayout from "./components/layout/AuthLayout"
 import AuthProvider from "./providers/AuthProvider"
+import { LOCATION_PATH } from "./constants/locations"
 
 function App() {
     return <AuthProvider>
         <Routes>
             <Route element={<NavLayout />}>
-                <Route path="/" element={<Home />} />
+                <Route path={LOCATION_PATH.HOME.PAGE} element={<Home />} />
                 <Route path="/category/games" element={<GameCategory />} />
-                <Route path="/account" element={<ProtectedRoute><Account/></ProtectedRoute>} />
-                <Route path="/cart" element={<Cart />} />
+                <Route path={LOCATION_PATH.ACCOUNT.PAGE} element={<ProtectedRoute><Account/></ProtectedRoute>} />
+                <Route path={LOCATION_PATH.CART.PAGE} element={<Cart />} />
             </Route>
             <Route element={<AuthLayout />}>
-                <Route path="/auth/login" element={<Login />} />
-                <Route path="/auth/register" element={<Register />} />
+                <Route path={LOCATION_PATH.AUTH.LOGIN} element={<Login />} />
+                <Route path={LOCATION_PATH.AUTH.REGISTER} element={<Register />} />
             </Route>
         </Routes>
     </AuthProvider>
