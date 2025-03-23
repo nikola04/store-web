@@ -58,6 +58,10 @@ function Menu({ close, user, logout, ...props }: {
         navigate(LOCATION_PATH.ACCOUNT.SETTINGS)
         close();
     }, [close, navigate]);
+    const goLogout = useCallback(() => {
+        logout();
+        close();
+    }, [close, logout]);
 
     return <div className="absolute flex flex-col top-full right-0 mt-1 p-1 bg-background-alt shadow-menu rounded-lg" { ...props }>
         <div className="px-1 py-1.75">
@@ -74,7 +78,7 @@ function Menu({ close, user, logout, ...props }: {
             <div className=" h-0.25 w-full bg-accent/15"></div>
         </div>
         <MenuItem name="Settings" icon={<MdSettings size={17}/>} onClick={goSettings} />
-        <MenuItem name="Logout" icon={<IoLogOut size={15}/>} onClick={logout} />
+        <MenuItem name="Logout" icon={<IoLogOut size={15}/>} onClick={goLogout} />
     </div>
 }
 

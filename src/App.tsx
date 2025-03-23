@@ -10,6 +10,7 @@ import Register from "./pages/auth/Register"
 import AuthLayout from "./components/layout/AuthLayout"
 import AuthProvider from "./providers/AuthProvider"
 import { LOCATION_PATH } from "./constants/locations"
+import AccountSettings from "./pages/account/Settings"
 
 function App() {
     return <AuthProvider>
@@ -17,8 +18,9 @@ function App() {
             <Route element={<NavLayout />}>
                 <Route path={LOCATION_PATH.HOME.PAGE} element={<Home />} />
                 <Route path="/category/games" element={<GameCategory />} />
-                <Route path={LOCATION_PATH.ACCOUNT.PAGE} element={<ProtectedRoute><Account/></ProtectedRoute>} />
                 <Route path={LOCATION_PATH.CART.PAGE} element={<Cart />} />
+                <Route path={LOCATION_PATH.ACCOUNT.PAGE} element={<ProtectedRoute><Account/></ProtectedRoute>} />
+                <Route path={LOCATION_PATH.ACCOUNT.SETTINGS} element={<ProtectedRoute><AccountSettings/></ProtectedRoute>} />
             </Route>
             <Route element={<AuthLayout />}>
                 <Route path={LOCATION_PATH.AUTH.LOGIN} element={<Login />} />
