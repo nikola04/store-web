@@ -1,11 +1,13 @@
 import { useCallback, FormEvent, useState } from "react";
 import { useNavigate } from 'react-router';
-import { IoCartOutline, IoMoonOutline, IoSearch } from "react-icons/io5";
+import { IoCartOutline, IoSearch } from "react-icons/io5";
 import NavButton from "./NavButton";
 import { MdGames } from "react-icons/md";
 import NavUserMenu from "./NavUserMenu";
 
-function Nav(){
+function Nav({ fullWidth = false }: {
+    fullWidth: boolean
+}){
     const navigate = useNavigate();
     const [search, setSearch] = useState<string>("");
 
@@ -14,8 +16,8 @@ function Nav(){
         navigate(`/category/games?query=${search}`);
     }, [navigate, search])
 
-    return <div className="flex flex-col justify-center items-center w-full h-auto bg-background-alt text-white z-10">
-        <div className="max-w-7xl w-full px-4">
+    return <div className="sticky top-0 flex flex-col justify-center items-center w-full max-w-full h-auto bg-background-alt text-white z-10">
+        <div className={`${ !fullWidth && 'max-w-7xl' } w-full px-4`}>
             <div className="relative w-full h-16 flex justify-between items-center gap-2">
                 <div className="w-full h-full flex items-center gap-8">
                     <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate("/")}>
@@ -34,11 +36,6 @@ function Nav(){
                     </div>
                 </div>
                 <div className="flex items-center gap-3.5">
-                    <div>
-                        <NavButton className="text-text-base active:text-primary flex transition-all">
-                            <IoMoonOutline size={19} className="transition-all m-0.25"/>
-                        </NavButton>
-                    </div>
                     <div>
                         <NavButton className="text-text-base active:text-primary flex transition-all" onClick={() => navigate("/cart")}>
                             <IoCartOutline size={20} className="transition-all"/>

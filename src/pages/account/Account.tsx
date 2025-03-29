@@ -1,12 +1,11 @@
-import Container from "../../components/layout/Container";
-import { useAuth } from "../../hooks/useAuth";
+import AccountHeading from "../../components/account/Heading";
+// import { useAuth } from "../../hooks/useAuth";
 
 function Account(){
-    const { user } = useAuth();
-    return <Container>
-        <h1>Account</h1>
-        <p>{ JSON.stringify(user) }</p>
-    </Container>
+    // const { user } = useAuth();
+    return <div>
+        <AccountHeading title="Your Profile" body="Your personal data on RGames." />
+    </div>
 }
 
 export default Account;

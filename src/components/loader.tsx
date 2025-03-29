@@ -1,8 +1,18 @@
-function Loader(){
-    return <div className="flex justify-center items-center h-screen">
+function Loader({ size = 'm' }: {
+    size?: 's'|'m'|'lg'
+}){
+    let width = 48, height = 48;
+    if(size === 's') {
+        width = 32;
+        height = 32;
+    }else if(size == 'lg'){
+        width = 56;
+        height = 56;
+    }
+    return <div className="flex justify-center items-center">
         <span style={{
-                width: "48px",
-                height: "48px",
+                width: `${width}px`,
+                height: `${height}px`,
                 borderRadius: "50%",
                 position: "relative",
                 animation: "rotate 1s linear infinite",

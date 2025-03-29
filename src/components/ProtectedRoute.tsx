@@ -15,7 +15,9 @@ function ProtectedRoute({ children }: {
     const path = `${LOCATION_PATH.AUTH.LOGIN}?${searchParams.toString()}`;
     
     if(auth.isLoading) 
-        return <Loader />
+        return <div className="p-8">
+            <Loader size="lg" />
+        </div>
     if(!auth.isLoggedIn)
         return <Navigate to={path} replace/>
     return children;

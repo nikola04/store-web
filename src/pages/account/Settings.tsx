@@ -1,12 +1,9 @@
-import Container from "../../components/layout/Container";
-import { useAuth } from "../../hooks/useAuth";
+import AccountHeading from "../../components/account/Heading";
 
 function AccountSettings(){
-    const { user } = useAuth();
-    return <Container>
-        <h1>Account Settings</h1>
-        <p>{ JSON.stringify(user) }</p>
-    </Container>
+    return <div>
+        <AccountHeading title="Account Settings" body="Manage settings and privacy on your account." />
+    </div>
 }
 
 export default AccountSettings;

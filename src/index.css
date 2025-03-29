@@ -28,13 +28,22 @@
     --font-ubuntu: 'Ubuntu', sans-serif;
 }
 
+*{
+    box-sizing: border-box;
+}
+
 body {
   margin: 0;
+  padding: 0;
   display: flex;
   min-width: 280px;
   background-color: var(--color-background);
   color: var(--color-text-base);
   font-family: var(--font-ubuntu);
+}
+
+div#root{
+    width: 100%;
 }
 
 @keyframes rotate {

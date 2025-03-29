@@ -7,6 +7,10 @@ export const LOCATION_PATH = {
     ACCOUNT: {
         PAGE: '/account',
         SETTINGS: '/account/settings',
+        SECURITY: {
+            PAGE: '/account/security',
+            DEVICES: '/account/security/devices'
+        }
     },
     HOME: {
         PAGE: '/'

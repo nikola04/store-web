@@ -11,6 +11,9 @@ import AuthLayout from "./components/layout/AuthLayout"
 import AuthProvider from "./providers/AuthProvider"
 import { LOCATION_PATH } from "./constants/locations"
 import AccountSettings from "./pages/account/Settings"
+import AccountLayout from "./components/layout/AccountLayout"
+import AccountSecurity from "./pages/account/security/Security"
+import AccountDevices from "./pages/account/security/Devices"
 
 function App() {
     return <AuthProvider>
@@ -19,8 +22,14 @@ function App() {
                 <Route path={LOCATION_PATH.HOME.PAGE} element={<Home />} />
                 <Route path="/category/games" element={<GameCategory />} />
                 <Route path={LOCATION_PATH.CART.PAGE} element={<Cart />} />
-                <Route path={LOCATION_PATH.ACCOUNT.PAGE} element={<ProtectedRoute><Account/></ProtectedRoute>} />
-                <Route path={LOCATION_PATH.ACCOUNT.SETTINGS} element={<ProtectedRoute><AccountSettings/></ProtectedRoute>} />
+            </Route>
+            <Route element={<NavLayout fullWidth={true} />}>
+                <Route element={<ProtectedRoute><AccountLayout /></ProtectedRoute>} >
+                    <Route path={LOCATION_PATH.ACCOUNT.PAGE} element={<Account/>} />
+                    <Route path={LOCATION_PATH.ACCOUNT.SETTINGS} element={<AccountSettings/>} />
+                    <Route path={LOCATION_PATH.ACCOUNT.SECURITY.PAGE} element={<AccountSecurity/>} />
+                    <Route path={LOCATION_PATH.ACCOUNT.SECURITY.DEVICES} element={<AccountDevices/>} />
+                </Route>
             </Route>
             <Route element={<AuthLayout />}>
                 <Route path={LOCATION_PATH.AUTH.LOGIN} element={<Login />} />
