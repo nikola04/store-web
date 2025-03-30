@@ -50,6 +50,7 @@ export const groupDevicesByCategory = (devices: Device[]): DeviceCategoryGroup[]
             devices_names: device.name ? [device.name] : []
         });
     });
+    groups.forEach((group) => group.devices.sort((a, b) => new Date(b.last_login).getTime() - new Date(a.last_login).getTime()));
     return groups;
 }
 

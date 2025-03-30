@@ -10,6 +10,7 @@ import { ConfirmOutlineButton } from "../../../components/button/ConfirmOutlineB
 import { DeclineOutlineButton } from "../../../components/button/DeclineOutlineButton";
 import { BackNav } from "../../../components/account/BackNav";
 import { DangerButton } from "../../../components/button/DangerButton";
+import { mergeTwoStrings } from "../../../utils/strings";
 
 const DEFAULT_ORIGIN = LOCATION_PATH.ACCOUNT.SECURITY.ACTIVITIES;
 
@@ -22,7 +23,11 @@ export default function AccountActivity(){
         navigate(LOCATION_PATH.ACCOUNT.SECURITY.ACTIVITIES);
         return null;
     }
-    if(loading) return <Loader size="s" />
+    if(loading){
+        return <div className="py-8">
+            <Loader size="s" />
+        </div>
+    }
     if(!activity) return <p>Error loading activity</p>
 
     const setActivityApproval = (approve: boolean) => {
@@ -34,8 +39,8 @@ export default function AccountActivity(){
 
     const platform = getPlatformIconByCategory(getDeviceCategory(device?.type, device?.os));
 
-    const info = mergeStrings(device?.os, device?.app, 'Unknown Device');
-    const location = mergeStrings(session?.location?.city, session?.location?.country, 'Unkown Location');
+    const info = mergeTwoStrings(device?.os, device?.app, 'Unknown Device');
+    const location = mergeTwoStrings(session?.location?.city, session?.location?.country, 'Unkown Location');
 
     const userLocale = 'en-US' // navigator.language || navigator.languages[0]; // should be consistent everywhere
     const dateString = new Date(activity.created_at).toLocaleDateString(userLocale, {
@@ -116,13 +121,4 @@ function ConfirmationBlock({ setApproval }: {
             <ConfirmOutlineButton title="It is my activity" onClick={() => setApproval(true)}>Yes, it is me</ConfirmOutlineButton>
         </div>
     </div>
-}
-
-const mergeStrings = (firstWord: string|undefined, secWord: string|undefined, unkownMessage: string): string => {
-    let info = '';
-    if(firstWord) info += firstWord;
-    if(firstWord && secWord) info += ', ';
-    if(secWord) info += secWord;
-    if(info === '') return unkownMessage;
-    return info;
 }

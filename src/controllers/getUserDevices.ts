@@ -17,6 +17,7 @@ export interface Device {
     app?: string;
     logged_out: boolean;
     last_login: Date;
+    last_login_location?: Location,
     current_device: boolean;
 }
 

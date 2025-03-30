@@ -34,7 +34,7 @@ function RecentActivitiesSection(){
     const goActivities = () => navigate(`${activitiesLocation}?origin=${ORIGIN_LOCATION}`)
 
     return <Section title="Recent Activities">
-        { loading ? <Loader size='s'/> : <>
+        { loading ? <div className="py-2"><Loader size='s'/></div> : <>
             { activities.length === 0 ? <p className="px-4 py-2">There is no recent activity.</p> :
             <div>
                 { activities.map((activity) => <ActivityItem key={activity.id} activity={activity} onClick={() => onClick(activity.id)} />) }
@@ -131,8 +131,8 @@ function MyDevicesSection(){
     const onClick = () => navigate(`${devicesLocation}?origin=${ORIGIN_LOCATION}`);
 
     return <Section title="My Devices">
-        { loading ? <Loader size='s'/> : <>
-        { deviceCategories.map(category => <DeviceGroupItem key={category.category} group={category} onClick={onClick} /> ) }
+        { loading ? <div className="py-2"><Loader size='s'/></div> : <>
+        { deviceCategories.map(category => <DeviceGroupItem key={category.category} group={category} /> ) }
         <div className="bg-accent/12 w-full h-[1px] flex items-center justify-center my-2"></div>
         <div className="flex items-center justify-center gap-4 px-3 py-2 h-10 hover:bg-background active:bg-background/75 rounded-md cursor-pointer transition-all" onClick={onClick}>
             <p className="text-sm text-primary whitespace-nowrap text-ellipsis">Manage Devices</p>
@@ -141,10 +141,12 @@ function MyDevicesSection(){
     </Section>
 }
 
-function DeviceGroupItem({ group, onClick }: {
+function DeviceGroupItem({ group }: {
     group: DeviceCategoryGroup;
-    onClick: () => void;
 }){
+    const navigate = useNavigate();
+    const devicesLocation = LOCATION_PATH.ACCOUNT.SECURITY.DEVICES;
+    const onClick = () => navigate(`${devicesLocation}?origin=${ORIGIN_LOCATION}#${group.category}`);
 
     const platform = getPlatformIconByCategory(group.category);
     const s = group.size > 1 && 's';

@@ -24,7 +24,7 @@ function Loader({ size = 'm' }: {
                     position: "absolute",
                     inset: "0px",
                     borderRadius: "50%",
-                    border: "5px solid #FFF",
+                    border: "5px solid transparent",
                     animation: "prixClipFix 2s linear infinite",
                 }}
             ></span>

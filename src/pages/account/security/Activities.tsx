@@ -37,13 +37,13 @@ export default function AccountActivities(){
         return groups;
     }, [activities]);
 
-    console.log(groupsByDate)
-
     if(loading){
-        return <Loader size="s" />
+        return <div className="py-8">
+            <Loader size="s" />
+        </div>
     }
     if(!activities){
-        return <p>Error loading activity</p>
+        return <p>Error loading activities.</p>
     }
 
     return <div className="w-full">
@@ -53,7 +53,7 @@ export default function AccountActivities(){
                     <BackNav defaultOrigin={DEFAULT_ORIGIN} />
                     <h2 className="py-2 text-xl text-text-base">My Activities</h2>
                 </div>
-                <p className="text-sm text-text-base/70">Your activities from last 21 days</p>
+                <p className="text-sm text-text-base/70">Your activities from last 21 days.</p>
             </div>
             <div className="flex flex-col gap-4">
                 { groupsByDate.map((group, ind) => <ActivityGroup key={ind} group={group} />) }
@@ -125,9 +125,13 @@ function ActivityStatus({ approved }: {
     }
     if(approved == false) {
         return <div className="flex mr-auto items-center gap-1 px-1.5 py-0.5 rounded-md bg-red-100/70">
-            <MdGppBad size={14} className="text-red-500" />
-            <p className="text-xs text-red-500">Not Approved</p>
+            <MdGppBad size={14} className="text-red-500/90" />
+            <p className="text-xs text-red-500/90">Not Approved</p>
         </div>
     }
     return null;
+    // return <div className="flex mr-auto items-center gap-1 py-0.5 rounded-md">
+    //     <MdGppMaybe size={14} className="text-text-base/60" />
+    //     <p className="text-xs text-text-base/60">Not checked</p>
+    // </div>;
 }
