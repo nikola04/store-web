@@ -4,9 +4,8 @@ import { useNavigate } from "react-router";
 import { JSX, PropsWithChildren, ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import { User } from "../../types/user";
-import { MdSettings } from "react-icons/md";
+import { MdLogout, MdSettings } from "react-icons/md";
 import { LOCATION_PATH } from "../../constants/locations";
-import { IoChevronForward, IoLogOut } from "react-icons/io5";
 
 export default function NavUserMenu(){
     const [active, setActive] = useState<boolean>(false);
@@ -36,8 +35,8 @@ export default function NavUserMenu(){
     }, [close])
 
     return <>
-        <NavButton ref={buttonRef} active={active} className={`text-text-base active:text-primary transition-all ${active && '!text-primary'}`} onClick={buttonClick}>
-            <LuUser size={20} className="transition-all"/>
+        <NavButton ref={buttonRef} active={active} className={`relative overflow-clip text-text-base active:text-primary transition-all ${active && '!text-primary'} ${user && user.image && '!p-0'}`} onClick={buttonClick}>
+            { user && user.image ? <img className="w-12" src={user.image} /> : <LuUser size={20} className="transition-all"/> }
         </NavButton>
         { active && user && <Menu ref={menuRef} close={() => setActive(false)} user={user} logout={logout} /> }
     </>
@@ -62,10 +61,10 @@ function Menu({ close, user, logout, ...props }: {
         logout();
         close();
     }, [close, logout]);
-    return <div className="absolute flex flex-col top-full right-0 mt-1 bg-background-alt shadow-menu rounded-lg overflow-hidden" {...props}>
+    return <div className="absolute flex flex-col top-full right-0 mt-1 px-1 py-1.25 bg-background-alt shadow-menu rounded-lg overflow-hidden" {...props}>
         <UserProfile user={user} goProfile={goProfile} />
         <MenuItem name="Settings" icon={<MdSettings size={17}/>} onClick={goSettings} />
-        <MenuItem name="Logout" icon={<IoLogOut size={15}/>} onClick={goLogout} />
+        <MenuItem name="Logout" icon={<MdLogout size={15}/>} onClick={goLogout} />
     </div>
 }
 
@@ -74,12 +73,13 @@ function UserProfile({ user, goProfile }: {
     goProfile: () => void;
 }){
     return <div className="flex flex-col">
-        <div className="px-1 py-1.75">
+        <div className="px-2 py-1.75">
             <div onClick={goProfile} className="flex px-1.5 py-2 gap-2 rounded-md hover:bg-primary-bg-light cursor-pointer transition-all">
-                <div className="flex rounded-full w-10 h-10 bg-accent">
+                <div className="flex rounded-full w-10 h-10 bg-accent overflow-clip">
+                    { user.image && <img src={user.image} /> }
                 </div>
                 <div className="flex flex-col justify-center text-text-base">
-                    <p className="text-ellipsis text-nowrap text-[15px]/4 font-black">{user?.name}</p>
+                    <p className="text-ellipsis text-nowrap text-[15px]/4 font-bold">{user?.name}</p>
                     <p className="text-xs text-primary">See your account</p>
                 </div>
             </div>
@@ -90,19 +90,15 @@ function UserProfile({ user, goProfile }: {
     </div>
 }
 
-function MenuItem({ name, icon, group = false, onClick }: {
+function MenuItem({ name, icon, onClick }: {
     name: string;
     icon?: ReactNode;
-    group?: boolean;
     onClick?: () => void;
 }){
     return <div className="text-text-base px-1 py-0.75">
         <div onClick={onClick} className="flex items-center gap-3 w-64 px-1.5 py-1.25 rounded-md hover:bg-primary-bg-light cursor-pointer transition-all">
             { icon && <div className="p-2 rounded-full bg-primary-bg/65 text-primary">{ icon }</div> }
-            <p className="text-ellipsis text-nowrap text-[15px]">{ name }</p>
-            { group && <div className="ml-auto mr-1">
-                <IoChevronForward/>
-            </div> }
+            <p className="text-ellipsis text-nowrap text-sm">{ name }</p>
         </div>
     </div>
 }

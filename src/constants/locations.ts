@@ -9,7 +9,8 @@ export const LOCATION_PATH = {
         SETTINGS: '/account/settings',
         SECURITY: {
             PAGE: '/account/security',
-            DEVICES: '/account/security/devices'
+            DEVICES: '/account/security/devices',
+            ACTIVITIES: '/account/security/activities',
         }
     },
     HOME: {

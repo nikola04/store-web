@@ -14,6 +14,8 @@ import AccountSettings from "./pages/account/Settings"
 import AccountLayout from "./components/layout/AccountLayout"
 import AccountSecurity from "./pages/account/security/Security"
 import AccountDevices from "./pages/account/security/Devices"
+import AccountActivities from "./pages/account/security/Activities"
+import AccountActivity from "./pages/account/security/Activity"
 
 function App() {
     return <AuthProvider>
@@ -29,6 +31,8 @@ function App() {
                     <Route path={LOCATION_PATH.ACCOUNT.SETTINGS} element={<AccountSettings/>} />
                     <Route path={LOCATION_PATH.ACCOUNT.SECURITY.PAGE} element={<AccountSecurity/>} />
                     <Route path={LOCATION_PATH.ACCOUNT.SECURITY.DEVICES} element={<AccountDevices/>} />
+                    <Route path={LOCATION_PATH.ACCOUNT.SECURITY.ACTIVITIES} element={<AccountActivities/>} />
+                    <Route path={`${LOCATION_PATH.ACCOUNT.SECURITY.ACTIVITIES}/:id`} element={<AccountActivity/>} />
                 </Route>
             </Route>
             <Route element={<AuthLayout />}>

@@ -13,24 +13,33 @@ import { useActivities } from "../../../hooks/useActivities";
 import { IActivity } from "../../../types/activity";
 import { getActivityIcon, getActivityName } from "../../../utils/activity";
 
+const ORIGIN_LOCATION = LOCATION_PATH.ACCOUNT.SECURITY.PAGE;
+
 export default function AccountSecurity(){
     return <div className="flex flex-col">
         <AccountHeading title="Account Security" body="Manage your account security. Keep your account safe." />
         <RecentActivitiesSection />
         <SigninWaysSection />
         <MyDevicesSection />
+        <div className="pb-8"></div>
     </div>
 }
 
 function RecentActivitiesSection(){
     const { activities, loading } = useActivities({ limit: 3 });
+    const navigate = useNavigate();
+
+    const activitiesLocation = LOCATION_PATH.ACCOUNT.SECURITY.ACTIVITIES;
+    const onClick = (id: string) => navigate(`${activitiesLocation}/${id}?origin=${ORIGIN_LOCATION}`);
+    const goActivities = () => navigate(`${activitiesLocation}?origin=${ORIGIN_LOCATION}`)
+
     return <Section title="Recent Activities">
         { loading ? <Loader size='s'/> : <>
             { activities.length === 0 ? <p className="px-4 py-2">There is no recent activity.</p> :
             <div>
-                { activities.map((activity) => <ActivityItem key={activity.id} activity={activity} />) }
+                { activities.map((activity) => <ActivityItem key={activity.id} activity={activity} onClick={() => onClick(activity.id)} />) }
                 <div className="bg-accent/12 w-full h-[1px] flex items-center justify-center my-2"></div>
-                <div className="flex items-center justify-center gap-4 px-3 py-2 h-10 hover:bg-background rounded-md cursor-pointer">
+                <div className="flex items-center justify-center gap-4 px-3 py-2 h-10 hover:bg-background active:bg-background/75 rounded-md cursor-pointer transition-all" onClick={goActivities}>
                     <p className="text-sm text-primary whitespace-nowrap text-ellipsis">View more Activities</p>
                 </div>
             </div> }
@@ -38,25 +47,33 @@ function RecentActivitiesSection(){
     </Section>;
 }
 
-function ActivityItem({ activity }: {
-    activity: IActivity
+function ActivityItem({ activity, onClick }: {
+    activity: IActivity,
+    onClick: () => void
 }){
-    const navigate = useNavigate();
-    const onClick = () => navigate("");
-
     const Icon = getActivityIcon(activity.type);
 
-    return <div className="flex items-center gap-4 px-3 py-2 h-12 hover:bg-background rounded-md cursor-pointer" onClick={onClick}>
+    const userLocale = 'en-US' // navigator.language || navigator.languages[0]; // should be consistent everywhere
+    const dateString = new Date(activity.created_at).toLocaleDateString(userLocale, {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+    });
+
+    return <div className="flex items-center gap-4 px-3 py-2 h-12 hover:bg-background active:bg-background/75 rounded-md cursor-pointer transition-all" onClick={onClick}>
         <div className="flex justify-center basis-7">
             { Icon && <Icon /> }
         </div>
         <div className="flex basis-1/2 flex-col justify-center h-full">
             <p className="whitespace-nowrap text-[15px] text-ellipsis">
-                { getActivityName(activity.type) } on { activity.device?.name }
+                { getActivityName(activity.type) } on { activity.device?.name ?? 'Unknown Device' }
             </p>
         </div>
         <div className="flex basis-1/2 flex-col justify-center h-full text-sm text-text-base/60">
-            { new Date(activity.created_at).toLocaleString() }
+            { dateString }
         </div>
         <div className="flex text-text-base/60">
             <MdChevronRight size={18} />
@@ -89,7 +106,7 @@ function SigninWayItem({ name, icon, onClick, children }: {
     name: string;
     onClick?: () => void;
 } & PropsWithChildren<JSX.IntrinsicElements['div']>){
-    return <div className="flex items-center gap-4 px-3 py-2 h-12 hover:bg-background rounded-md cursor-pointer" onClick={onClick}>
+    return <div className="flex items-center gap-4 px-3 py-2 h-12 hover:bg-background active:bg-background/75 rounded-md cursor-pointer transition-all" onClick={onClick}>
         <div className="flex justify-center basis-7">
             { icon }
         </div>
@@ -110,13 +127,14 @@ function MyDevicesSection(){
     const deviceCategories = useMemo(() => groupDevicesByCategory(devices), [devices]);
 
     const navigate = useNavigate();
-    const onClick = () => navigate(LOCATION_PATH.ACCOUNT.SECURITY.DEVICES);
+    const devicesLocation = LOCATION_PATH.ACCOUNT.SECURITY.DEVICES;
+    const onClick = () => navigate(`${devicesLocation}?origin=${ORIGIN_LOCATION}`);
 
     return <Section title="My Devices">
         { loading ? <Loader size='s'/> : <>
         { deviceCategories.map(category => <DeviceGroupItem key={category.category} group={category} onClick={onClick} /> ) }
         <div className="bg-accent/12 w-full h-[1px] flex items-center justify-center my-2"></div>
-        <div className="flex items-center justify-center gap-4 px-3 py-2 h-10 hover:bg-background rounded-md cursor-pointer" onClick={onClick}>
+        <div className="flex items-center justify-center gap-4 px-3 py-2 h-10 hover:bg-background active:bg-background/75 rounded-md cursor-pointer transition-all" onClick={onClick}>
             <p className="text-sm text-primary whitespace-nowrap text-ellipsis">Manage Devices</p>
         </div>
         </> }
@@ -130,7 +148,7 @@ function DeviceGroupItem({ group, onClick }: {
 
     const platform = getPlatformIconByCategory(group.category);
     const s = group.size > 1 && 's';
-    return <div className="flex items-center gap-4 px-3 py-2 h-[60px] hover:bg-background rounded-md cursor-pointer" onClick={onClick}>
+    return <div className="flex items-center gap-4 px-3 py-2 h-[60px] hover:bg-background active:bg-background/75 rounded-md cursor-pointer transition-all" onClick={onClick}>
         <div className="flex justify-center basis-7">
             { platform && <PlatformIcon platform={platform} /> }
         </div>

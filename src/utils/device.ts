@@ -1,9 +1,7 @@
 import { PlatformType } from "../components/icons/PlatformIcon";
-import { Device, DeviceCategory, DeviceCategoryGroup } from "../controllers/getUserDevices";
+import { Device, DeviceCategory, DeviceCategoryGroup, DeviceOS, DeviceType } from "../controllers/getUserDevices";
 
-const getDeviceCategory = (device: Device): DeviceCategory => {
-    const { os, type } = device;
-
+export const getDeviceCategory = (type?: DeviceType, os?: DeviceOS): DeviceCategory => {
     if(type === 'Console') return 'Gaming Console';
     if(type === 'SmartTV') return 'Smart TV';
     
@@ -34,7 +32,7 @@ const getDeviceCategory = (device: Device): DeviceCategory => {
 export const groupDevicesByCategory = (devices: Device[]): DeviceCategoryGroup[] => {
     const groups: DeviceCategoryGroup[] = [];
     devices.forEach(device => {
-        const category = getDeviceCategory(device);
+        const category = getDeviceCategory(device.type, device.os);
         let added = false;
         for(const group of groups){
             if(group.category != category) continue;
