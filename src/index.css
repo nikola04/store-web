@@ -29,7 +29,8 @@
 }
 
 *{
-    box-sizing: border-box;
+    scrollbar-width: thin;
+    scrollbar-color: #bcbcbc var(--color-background);
 }
 
 body {
@@ -40,6 +41,7 @@ body {
   background-color: var(--color-background);
   color: var(--color-text-base);
   font-family: var(--font-ubuntu);
+  box-sizing: border-box;
 }
 
 div#root{

@@ -1,9 +1,9 @@
 import { makeRequest } from "../services/apiClient";
 import { IActivity } from "../types/activity";
 
-export const getUserActivities = async (limit: number = 10): Promise<IActivity[]> => {
+export const getActivities = async (limit: number = 10): Promise<IActivity[]> => {
     const response = await makeRequest({
-        url: `/user/@me/activities?limit=${limit}`,
+        url: `/account/activities?limit=${limit}`,
         method: 'GET',
         authorize: true
     });
@@ -13,9 +13,9 @@ export const getUserActivities = async (limit: number = 10): Promise<IActivity[]
     return activities.map((activity) => ({ ...activity, created_at: new Date(activity.created_at) }));
 }
 
-export const getUserActivity = async (id: string): Promise<IActivity> => {
+export const getActivity = async (id: string): Promise<IActivity> => {
     const response = await makeRequest({
-        url: `/user/@me/activities/${id}`,
+        url: `/account/activities/${id}`,
         method: 'GET',
         authorize: true
     });

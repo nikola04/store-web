@@ -18,7 +18,7 @@ function Nav({ fullWidth = false }: {
 
     return <>
         <div className="h-16"></div>
-        <div className="fixed top-0 flex flex-col justify-center items-center w-full max-w-full h-auto bg-background-alt text-white shadow-xs z-30">
+        <div className="fixed top-0 flex flex-col justify-center items-center w-full max-w-full h-auto bg-background-alt text-white z-30">
             <div className={`${ !fullWidth && 'max-w-7xl' } w-full px-4`}>
                 <div className="relative w-full h-16 flex justify-between items-center gap-2">
                     <div className="w-full h-full flex items-center gap-8">

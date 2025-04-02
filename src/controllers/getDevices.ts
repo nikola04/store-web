@@ -1,9 +1,9 @@
 import { makeRequest } from "../services/apiClient";
 import { Device } from "../types/device";
 
-export const getUserDevices = async (): Promise<Device[]> => {
+export const getDevices = async (): Promise<Device[]> => {
     const response = await makeRequest({
-        url: '/user/@me/devices',
+        url: '/account/devices',
         method: 'GET',
         authorize: true
     });
@@ -13,9 +13,9 @@ export const getUserDevices = async (): Promise<Device[]> => {
     return devices.map(device => ({ ...device, last_login_date: new Date(device.last_login_date) }));
 }
 
-export const getUserDevice = async (id: string): Promise<Device> => {
+export const getDevice = async (id: string): Promise<Device> => {
     const response = await makeRequest({
-        url: `/user/@me/devices/${id}`,
+        url: `/account/devices/${id}`,
         method: 'GET',
         authorize: true
     });

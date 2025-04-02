@@ -29,7 +29,7 @@ const items: Item[] = [{
 
 }]
 
-export default function AccountNav({ className, ...props }: PropsWithChildren<JSX.IntrinsicElements['div']>){
+export function AccountNav({ className, ...props }: PropsWithChildren<JSX.IntrinsicElements['div']>){
     return <div className={`fixed ${className}`} {...props}>
         <div className="py-6">
             { items.map((item, ind) => <NavItem key={ind} item={item} />)}
@@ -53,3 +53,28 @@ function NavItem({ item }: {
         </div>
     </div>
 }
+
+export function AccountTopNav({ className, ...props }: PropsWithChildren<JSX.IntrinsicElements['div']>){
+    return <div className={`fixed w-full z-20 shadow-xs ${className}`} {...props}>
+        <div className="relative w-full h-full flex items-center pt-1 bg-background-alt">
+            { items.map((item, ind) => <NavTopItem key={ind} item={item} />)}
+        </div>
+    </div>
+}
+
+function NavTopItem({ item }: {
+    item: Item,
+}){
+    const navigate = useNavigate();
+    const location = useLocation();
+    const isActive = item.isActive(location.pathname);
+
+    const Icon = item.icon;
+    const onClick = useCallback(() => navigate(item.link), [item.link, navigate])
+    return <div onClick={onClick} className={`relative w-full h-full flex justify-center cursor-pointer border-0 border-primary ${isActive && '!border-b-2'} transition-all`}>
+        <div className={`flex items-center gap-1 text-text-base ${isActive && '!text-primary'}`}>
+            <Icon size={17} />
+            <p className="text-sm">{ item.name }</p>
+        </div>
+    </div>
+};

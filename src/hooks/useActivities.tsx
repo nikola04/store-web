@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { IActivity } from "../types/activity";
-import { getUserActivities, getUserActivity } from "../controllers/getUserActivities";
+import { getActivities, getActivity } from "../controllers/getActivities";
 
 export const useActivities = ({ limit }: { limit?: number }) => {
     const [activities, setActivities] = useState<IActivity[]>([]);
@@ -9,7 +9,7 @@ export const useActivities = ({ limit }: { limit?: number }) => {
     useEffect(() => {
         const fetchActivity = async () => {
             try {
-                const activities = await getUserActivities(limit);
+                const activities = await getActivities(limit);
                 setActivities(activities);
             } catch (error) {
                 console.error("Failed to fetch activities", error);
@@ -33,7 +33,7 @@ export const useActivitiy = ({ id }: { id?: string }) => {
         if(!id) return;
         const fetchActivity = async () => {
             try {
-                const activities = await getUserActivity(id);
+                const activities = await getActivity(id);
                 setActivity(activities);
             } catch (error) {
                 console.error("Failed to fetch activity", error);

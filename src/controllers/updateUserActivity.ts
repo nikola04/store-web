@@ -2,7 +2,7 @@ import { makeRequest } from "../services/apiClient";
 
 export const approveActivity = async (id: string, approve: boolean) => {
     const response = await makeRequest({
-        url: `/user/@me/activities/${id}`,
+        url: `/account/activities/${id}`,
         method: 'PATCH',
         body: {
             approve

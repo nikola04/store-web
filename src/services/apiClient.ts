@@ -30,6 +30,7 @@ const handleError = async (error: AxiosError) => {
         originalRequestConfig.url = setCsrfParam(originalRequestConfig.url || '');
         return axios(originalRequestConfig);
     }
+    if(data.message) return ({ data });
     return Promise.reject(error);
 }
 

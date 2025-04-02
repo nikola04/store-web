@@ -1,3 +1,9 @@
+export interface IPasskey {
+    name: string;
+    id: string;
+    created_at: Date;
+}
+
 export interface User {
     id: string;
     name: string|null;

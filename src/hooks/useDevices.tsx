@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getUserDevice, getUserDevices } from "../controllers/getUserDevices";
+import { getDevice, getDevices } from "../controllers/getDevices";
 import { Device } from "../types/device";
 
 export const useDevices = () => {
@@ -7,7 +7,7 @@ export const useDevices = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const fetchDevices = async () => {
         try {
-            const devices = await getUserDevices();
+            const devices = await getDevices();
             setDevices(devices);
         } catch (error) {
             console.error("Failed to fetch devices", error);
@@ -29,7 +29,7 @@ export const useDevice = ({ id }: { id?: string }) => {
         const fetchDevices = async () => {
             if(!id) return;
             try {
-                const device = await getUserDevice(id);
+                const device = await getDevice(id);
                 setDevice(device);
             } catch (error) {
                 console.error("Failed to fetch device", error);

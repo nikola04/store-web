@@ -58,13 +58,14 @@ function DeviceCategory({ category }: {
             </div>
         </div>
         <div className="flex flex-col">
-            { category.devices.map((device, ind) => <DeviceItem key={ind} device={device} />) }
+            { category.devices.map((device, ind) => <DeviceItem key={ind} ind={ind+1} device={device} />) }
         </div>
     </div>
 }
 
-function DeviceItem({ device }: {
-    device: Device
+function DeviceItem({ device, ind }: {
+    device: Device,
+    ind: number
 }){
     const navigate = useNavigate();
 
@@ -78,6 +79,9 @@ function DeviceItem({ device }: {
     const locationString = mergeTwoStrings(device.last_login_location?.city, device.last_login_location?.country, 'Unknown Location');
 
     return <div className="flex items-center gap-4 px-3 py-2 h-[60px] hover:bg-background active:bg-background/75 rounded-md cursor-pointer transition-all text-text-base/80" onClick={goToDevice}>
+        <div className="flex basis-1">
+            <p className="text-sm text-text-base/80">{ind}.</p>
+        </div>
         <div className="flex basis-1/3 gap-2 items-center">
             <p className="text-sm whitespace-nowrap">{ deviceName }</p>
             { device.current_device && <div className="flex items-center gap-0.5 mr-auto px-1.5 py-0.25 rounded-md bg-primary">

@@ -13,7 +13,7 @@ export const logoutUser = async (): Promise<void> => {
 
 export const logoutSession = async (sessionId: string) => {
     const response = await makeRequest({
-        url: `/user/@me/sessions/${sessionId}`,
+        url: `/account/sessions/${sessionId}`,
         method: 'DELETE',
         authorize: true
     })

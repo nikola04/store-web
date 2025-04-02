@@ -22,7 +22,7 @@ export default function PlatformIcon({ platform, ...props }: {
     if(platform === 'linux')
         return <img src={linux} {...props} width={24} height={24} />;
     if(platform === 'windows')
-        return <img src={windows} {...props} width={22} height={22} />
+        return <img src={windows} {...props} width={28} height={28} />
     if(platform === 'smarttv')
         return <img src={smarttv} {...props} width={24} height={24} />
 }
