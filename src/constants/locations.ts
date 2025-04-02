@@ -11,6 +11,8 @@ export const LOCATION_PATH = {
             PAGE: '/account/security',
             DEVICES: '/account/security/devices',
             ACTIVITIES: '/account/security/activities',
+            PASSKEYS: '/account/security/passkeys',
+            CHNG_PSWD: '/account/security/change-password'
         }
     },
     HOME: {

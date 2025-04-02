@@ -1,33 +1,5 @@
 import { makeRequest } from "../services/apiClient";
-
-export interface Location {
-    lat?: number;
-    lon?: number;
-    city?: string;
-    country?: string;
-}
-
-export type DeviceType = 'Desktop'|'Mobile'|'Tablet'|'SmartTV'|'Console'|'Embedded'|'Wearable'|'XR'
-export type DeviceOS = 'MacOS'|'Windows'|'IOS'|'Android'|'Linux'|'ChromeOS'|'Linux'|'Playstation'|'Nintendo'|'Xbox'
-export interface Device {
-    id: string;
-    name?: string;
-    type?: DeviceType;
-    os?: DeviceOS;
-    app?: string;
-    logged_out: boolean;
-    last_login: Date;
-    last_login_location?: Location,
-    current_device: boolean;
-}
-
-export type DeviceCategory = 'Mac Computer'|'Windows Computer'|'Chrome Desktop'|'iPhone'|'Android Phone'|'Windows Phone'|'iPad'|'Android Tablet'|'Windows Tablet'|'Chrome Tablet'|'Gaming Console'|'Smart TV'|'Linux Device'|'Other'
-export interface DeviceCategoryGroup {
-    category: DeviceCategory;
-    size: number;
-    devices: Device[];
-    devices_names: string[];
-}
+import { Device } from "../types/device";
 
 export const getUserDevices = async (): Promise<Device[]> => {
     const response = await makeRequest({
@@ -37,5 +9,18 @@ export const getUserDevices = async (): Promise<Device[]> => {
     });
     const data = response.data;
     if(data.error || !data.devices) throw data.message;
-    return data.devices as Device[];
+    const devices = data.devices as Device[];
+    return devices.map(device => ({ ...device, last_login_date: new Date(device.last_login_date) }));
+}
+
+export const getUserDevice = async (id: string): Promise<Device> => {
+    const response = await makeRequest({
+        url: `/user/@me/devices/${id}`,
+        method: 'GET',
+        authorize: true
+    });
+    const data = response.data;
+    if(data.error || !data.device) throw data.message;
+    const device = data.device as Device;
+    return ({ ...device, last_login_date: new Date(device.last_login_date) });
 }

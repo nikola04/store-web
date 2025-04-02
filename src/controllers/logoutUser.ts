@@ -10,3 +10,14 @@ export const logoutUser = async (): Promise<void> => {
     if(data.error) throw data.message;
     return;
 }
+
+export const logoutSession = async (sessionId: string) => {
+    const response = await makeRequest({
+        url: `/user/@me/sessions/${sessionId}`,
+        method: 'DELETE',
+        authorize: true
+    })
+    const data = response.data;
+    if(data.error) throw data.message;
+    return;
+}

@@ -24,7 +24,7 @@ export default function AccountActivities(){
         const groups: ActivityDateGroup[] = [];
         let ind = -1;
         activities.forEach(activity => {
-            const date = new Date(activity.created_at).toDateString();
+            const date = activity.created_at.toDateString();
             if(ind === -1 || groups[ind].date != date){
                 groups.push({
                     date,
@@ -88,7 +88,7 @@ function ActivityItem({ activity }: {
     const goToActivity = () => navigate(`${activitiesLocation}/${activity.id}?origin=${ORIGIN_LOCATION}`);
 
     const userLocale = 'en-US' // navigator.language || navigator.languages[0]; // should be consistent everywhere
-    const timeString = new Date(activity.created_at).toLocaleTimeString(userLocale, {
+    const timeString = activity.created_at.toLocaleTimeString(userLocale, {
         hour: 'numeric',
         minute: 'numeric',
         hour12: true,

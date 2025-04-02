@@ -1,4 +1,4 @@
-import { DeviceOS, DeviceType, Location } from "../controllers/getUserDevices";
+import { DeviceOS, DeviceType, Location } from "./device";
 
 export enum Activity{
     LOGIN = 'login'
@@ -16,10 +16,8 @@ export interface IActivity {
     };
     type: Activity;
     login_session_id?: string;
-    session?: {
-        ip?: string;
-        location?: Location;
-    },
+    location?: Location;
+    ip?: string;
     approved: boolean|null;
     created_at: Date;
 }

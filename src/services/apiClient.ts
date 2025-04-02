@@ -66,15 +66,17 @@ const setCsrfParam = (url: string) => {
     return base + '?' + searchParams.toString();
 }
 
-const createRequest = ({ url, method }: {
+const createRequest = ({ url, method, body }: {
     url: string;
     method: string;
+    body?: unknown;
 }) => {
     const apiClient = createAPIClient();
     url = setCsrfParam(url);
     return () => apiClient.request({
         url,
-        method
+        method,
+        data: body
     });
 }
 
@@ -89,11 +91,12 @@ const refreshToken = async () => {
     }
 }
 
-export const makeRequest = async ({ url, method = 'GET' }: {
-    url: string,
-    method: string,
+export const makeRequest = async ({ url, method = 'GET', body }: {
+    url: string;
+    method: string;
+    body?: unknown;
     authorize: boolean
 }) => {
-    const request = createRequest({ url, method });
+    const request = createRequest({ url, method, body });
     return await request();
 }

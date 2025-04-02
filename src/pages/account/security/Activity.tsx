@@ -11,6 +11,9 @@ import { DeclineOutlineButton } from "../../../components/button/DeclineOutlineB
 import { BackNav } from "../../../components/account/BackNav";
 import { DangerButton } from "../../../components/button/DangerButton";
 import { mergeTwoStrings } from "../../../utils/strings";
+import { Map } from "../../../components/Map";
+import { approveActivity } from "../../../controllers/updateUserActivity";
+import { useCallback } from "react";
 
 const DEFAULT_ORIGIN = LOCATION_PATH.ACCOUNT.SECURITY.ACTIVITIES;
 
@@ -18,6 +21,12 @@ export default function AccountActivity(){
     const { id } = useParams();
     const { activity, loading, updateApproval } = useActivitiy({ id });
     const navigate = useNavigate();
+
+    const setActivityApproval = useCallback(async (approve: boolean) => {
+        if(!activity) return;
+        await approveActivity(activity.id, approve);
+        updateApproval(approve);
+    }, [activity, updateApproval]);
     
     if(!id) {
         navigate(LOCATION_PATH.ACCOUNT.SECURITY.ACTIVITIES);
@@ -30,20 +39,16 @@ export default function AccountActivity(){
     }
     if(!activity) return <p>Error loading activity</p>
 
-    const setActivityApproval = (approve: boolean) => {
-        updateApproval(approve);
-    }
-
     const device = activity.device;
-    const session = activity.session;
+    const location = activity.location;
 
     const platform = getPlatformIconByCategory(getDeviceCategory(device?.type, device?.os));
 
-    const info = mergeTwoStrings(device?.os, device?.app, 'Unknown Device');
-    const location = mergeTwoStrings(session?.location?.city, session?.location?.country, 'Unkown Location');
+    const infoString = mergeTwoStrings(device?.os, device?.app, 'Unknown Device');
+    const locationString = mergeTwoStrings(location?.city, location?.country, 'Unkown Location');
 
     const userLocale = 'en-US' // navigator.language || navigator.languages[0]; // should be consistent everywhere
-    const dateString = new Date(activity.created_at).toLocaleDateString(userLocale, {
+    const dateString = activity.created_at.toLocaleDateString(userLocale, {
         day: 'numeric',
         month: 'long',
         year: 'numeric',
@@ -53,6 +58,7 @@ export default function AccountActivity(){
     });
 
     const thisDevice = device?.current_device == true;
+    const lat = location?.lat, lon = location?.lon;
 
     return <div className="w-full">
         <div className='flex flex-col gap-5 px-7 py-4 my-4 bg-background-alt rounded-lg shadow-sm'>
@@ -70,20 +76,27 @@ export default function AccountActivity(){
                 <div>
                     { platform && <PlatformIcon platform={platform} /> }
                 </div>
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-1">
+                    <p className="font-medium text-text-base/90">{ device?.name }</p>
                     <div>
-                        <p className="font-medium text-text-base/90">{ device?.name }</p>
-                        <p className="text-sm text-text-base/70">{ info }</p>
-                    </div>
-                    <div>
+                        <p className="text-sm text-text-base/70">{ infoString }</p>
                         { thisDevice && <div className="flex items-center gap-1">
                             <p className="text-sm text-text-base/70">This Device</p>
                             <MdVerified size={15} className="text-primary mt-0.5"/>
                         </div> }
-                        <p className="text-sm text-text-base/70">{ location }</p>
                     </div>
                 </div>
             </div>
+            <div className="flex flex-col gap-1">
+                <p className="text-xs font-medium uppercase">Location:</p>
+                <div>
+                    <p className="text-sm text-text-base/70">{ activity.ip }</p>
+                    <p className="text-sm text-text-base/70">{ locationString }</p>
+                </div>
+            </div>
+            { lat && lon && <div className="relative w-96 h-64 rounded-sm overflow-clip">
+                <Map lat={lat} lon={lon} />
+            </div> }
             <ApproveSection isApproved={activity.approved} setApproval={setActivityApproval} />
         </div>
     </div>;

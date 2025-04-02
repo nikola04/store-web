@@ -1,7 +1,7 @@
-import { JSX, PropsWithChildren, ReactNode, useMemo } from "react";
+import { JSX, PropsWithChildren, ReactNode, useCallback, useMemo } from "react";
 import AccountHeading from "../../../components/account/Heading";
 import Section from "../../../components/account/Section";
-import { DeviceCategoryGroup } from "../../../controllers/getUserDevices";
+import { DeviceCategoryGroup } from "../../../types/device";
 import { getPlatformIconByCategory, groupDevicesByCategory } from "../../../utils/device";
 import PlatformIcon from "../../../components/icons/PlatformIcon";
 import { useNavigate } from "react-router";
@@ -40,7 +40,7 @@ function RecentActivitiesSection(){
                 { activities.map((activity) => <ActivityItem key={activity.id} activity={activity} onClick={() => onClick(activity.id)} />) }
                 <div className="bg-accent/12 w-full h-[1px] flex items-center justify-center my-2"></div>
                 <div className="flex items-center justify-center gap-4 px-3 py-2 h-10 hover:bg-background active:bg-background/75 rounded-md cursor-pointer transition-all" onClick={goActivities}>
-                    <p className="text-sm text-primary whitespace-nowrap text-ellipsis">View more Activities</p>
+                    <p className="text-sm text-primary whitespace-nowrap text-ellipsis">View Activities</p>
                 </div>
             </div> }
         </> }
@@ -54,7 +54,7 @@ function ActivityItem({ activity, onClick }: {
     const Icon = getActivityIcon(activity.type);
 
     const userLocale = 'en-US' // navigator.language || navigator.languages[0]; // should be consistent everywhere
-    const dateString = new Date(activity.created_at).toLocaleDateString(userLocale, {
+    const dateString = activity.created_at.toLocaleDateString(userLocale, {
         day: 'numeric',
         month: 'long',
         year: 'numeric',
@@ -82,11 +82,20 @@ function ActivityItem({ activity, onClick }: {
 }
 
 function SigninWaysSection(){
+    const navigate = useNavigate();
+    const goTo = useCallback((page: string) => navigate(`${page}?origin=${ORIGIN_LOCATION}`), [navigate]);
+
+    const passkeysLocation = LOCATION_PATH.ACCOUNT.SECURITY.PASSKEYS;
+    const goPasskeys = () => goTo(passkeysLocation);
+
+    const changePswdLocation = LOCATION_PATH.ACCOUNT.SECURITY.CHNG_PSWD;
+    const goChangePswd = () => goTo(changePswdLocation);
+
     return <Section title="Ways to Sign in">
-        <SigninWayItem name="Password" icon={<MdOutlinePassword />}>
+        <SigninWayItem name="Password" onClick={goChangePswd} icon={<MdOutlinePassword />}>
             <p>Last changed: 27.3.2024.</p>
         </SigninWayItem>
-        <SigninWayItem name="Passkeys" icon={<MdKey />}>
+        <SigninWayItem name="Passkeys" onClick={goPasskeys} icon={<MdKey />}>
             <p>1 Passkey</p>
         </SigninWayItem>
         <SigninWayItem name="Authenticator" icon={<MdQrCode />}>

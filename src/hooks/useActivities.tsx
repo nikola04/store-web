@@ -12,7 +12,7 @@ export const useActivities = ({ limit }: { limit?: number }) => {
                 const activities = await getUserActivities(limit);
                 setActivities(activities);
             } catch (error) {
-                console.error("Failed to fetch logins", error);
+                console.error("Failed to fetch activities", error);
             } finally {
                 setLoading(false);
             }
@@ -36,7 +36,7 @@ export const useActivitiy = ({ id }: { id?: string }) => {
                 const activities = await getUserActivity(id);
                 setActivity(activities);
             } catch (error) {
-                console.error("Failed to fetch logins", error);
+                console.error("Failed to fetch activity", error);
             } finally {
                 setLoading(false);
             }

@@ -9,7 +9,8 @@ export const getUserActivities = async (limit: number = 10): Promise<IActivity[]
     });
     const data = response.data;
     if(data.error || !data.activities) throw data.message;
-    return data.activities as IActivity[];
+    const activities = data.activities as IActivity[];
+    return activities.map((activity) => ({ ...activity, created_at: new Date(activity.created_at) }));
 }
 
 export const getUserActivity = async (id: string): Promise<IActivity> => {
@@ -20,5 +21,6 @@ export const getUserActivity = async (id: string): Promise<IActivity> => {
     });
     const data = response.data;
     if(data.error || !data.activity) throw data.message;
-    return data.activity as IActivity;
+    const activity = data.activity as IActivity;
+    return ({ ...activity, created_at: new Date(activity.created_at) });
 }

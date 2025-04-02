@@ -4,11 +4,12 @@ import Loader from "../../../components/loader";
 import { LOCATION_PATH } from "../../../constants/locations";
 import { useDevices } from "../../../hooks/useDevices"
 import { getPlatformIconByCategory, groupDevicesByCategory } from "../../../utils/device";
-import { Device, DeviceCategoryGroup } from "../../../controllers/getUserDevices";
-import { MdCheck, MdChevronRight } from "react-icons/md";
+import { Device, DeviceCategoryGroup } from "../../../types/device";
+import { MdBlock, MdCheck, MdChevronRight } from "react-icons/md";
 import { useNavigate } from "react-router";
 import { mergeTwoStrings } from "../../../utils/strings";
 import PlatformIcon from "../../../components/icons/PlatformIcon";
+import { formatTimeDifference } from "../../../utils/time";
 
 const DEFAULT_ORIGIN = LOCATION_PATH.ACCOUNT.SECURITY.PAGE;
 const ORIGIN_LOCATION = LOCATION_PATH.ACCOUNT.SECURITY.DEVICES;
@@ -33,7 +34,7 @@ export default function AccountDevices(){
                     <BackNav defaultOrigin={DEFAULT_ORIGIN} />
                     <h2 className="py-2 text-xl text-text-base">My Devices</h2>
                 </div>
-                <p className="text-sm text-text-base/70">Devices on which you have been logged in at least once.</p>
+                <p className="text-sm text-text-base/80">Devices on which you have been logged in at least once.</p>
             </div>
             <div className="flex flex-col gap-4">
                 { deviceCategories.map((category, ind) => <DeviceCategory key={ind} category={category} />)}
@@ -73,10 +74,10 @@ function DeviceItem({ device }: {
     const deviceName = device.name || 'Unknown Device';
     const deviceApp = device.app || 'Unknown App';
 
-    const timeString = device.current_device ? 'Now' : formatTimeDifference(new Date(device.last_login));
+    const timeString = device.current_device ? 'Now' : formatTimeDifference(device.last_login_date);
     const locationString = mergeTwoStrings(device.last_login_location?.city, device.last_login_location?.country, 'Unknown Location');
 
-    return <div className="flex items-center gap-4 px-3 py-2 h-[60px] hover:bg-background active:bg-background/75 rounded-md cursor-pointer transition-all text-text-base/70" onClick={goToDevice}>
+    return <div className="flex items-center gap-4 px-3 py-2 h-[60px] hover:bg-background active:bg-background/75 rounded-md cursor-pointer transition-all text-text-base/80" onClick={goToDevice}>
         <div className="flex basis-1/3 gap-2 items-center">
             <p className="text-sm whitespace-nowrap">{ deviceName }</p>
             { device.current_device && <div className="flex items-center gap-0.5 mr-auto px-1.5 py-0.25 rounded-md bg-primary">
@@ -86,41 +87,17 @@ function DeviceItem({ device }: {
         </div>
         <div className="flex basis-1/3 flex-col gap-1 justify-center h-full">
             <p className="whitespace-nowrap text-sm">{ deviceApp }</p>
-            <p className="whitespace-nowrap text-sm">{ device.logged_out && 'true' }</p>
+            { device.logged_out && <div className="flex items-center gap-1">
+                <MdBlock size={14} />
+                <p className="text-xs">Logged out</p>
+            </div> }
         </div>
-        <div className="flex basis-1/3 flex-col gap-1 justify-center h-full text-sm text-text-base/70">
+        <div className="flex basis-1/3 flex-col gap-1 justify-center h-full text-sm text-text-base/80">
             <p>{ timeString }</p>
             <p>{ locationString }</p>
         </div>
-        <div className="flex text-text-base/60">
+        <div className="flex text-text-base/80">
             <MdChevronRight size={18} />
         </div>
     </div>
-}
-
-const formatTimeDifference = (date: Date) => {
-    const now = Date.now();
-    const difference = now - date.getTime();
-
-    if (difference < 0) {
-        return "Now";
-    }
-
-    const seconds = Math.floor(difference / 1000);
-    const minutes = Math.floor(seconds / 60);
-    const hours = Math.floor(minutes / 60);
-    const days = Math.floor(hours / 24);
-    const years = Math.floor(days / 365);
-
-    if (seconds < 60) {
-        return 'Now';
-    } else if (minutes < 60) {
-        return `${minutes} minute${minutes > 1 ? 's' : ''}  ago`;
-    } else if (hours < 24) {
-        return `${hours} hour${hours > 1 ? 's' : ''} ago`;
-    } else if (days < 30) {
-        return `${days} day${days > 1 ? 's' : ''}  ago`;
-    } else {
-        return `${years} year${years > 1 ? 's' : ''}  ago`;
-    }
 }
